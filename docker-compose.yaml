@@ -1,8 +1,8 @@
 services:
   # Serviço do PostgreSQL
-  postgres:
+  db:
     image: postgres
-    container_name: postgres
+    container_name: banco
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -13,17 +13,21 @@ services:
       - ./data:/var/lib/postgresql/data
 
   # Serviço do Spring
-  spring:
-    build:
-      context: ./backend
+  api:
+    image: maven:3.8.1-openjdk-17-slim
     container_name: spring
+    working_dir: /app
+    volumes:
+      - ./backend:/app
+      - ~/.m2:/root/.m2
+    command: mvn spring-boot:run
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB}
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/${POSTGRES_DB}
       SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
       SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
       SPRING_JPA_SHOW_SQL: true
-    ports:
-      - "8080:8080"
-    depends_on:
-      - postgres
