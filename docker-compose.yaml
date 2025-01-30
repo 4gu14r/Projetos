@@ -37,6 +37,7 @@ services:
     volumes:
       - ./frontend:/home/node/task
       - /home/node/task/node_modules # Isso é um volume ANÔNIMO, serve para não sobrescrever a pasta quando tiver um volume mapeado.
+      - ~/.vscode-server/extensions:/root/.vscode-server/extensions
     ports:
       - "4200:4200"
     depends_on:
