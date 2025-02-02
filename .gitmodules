@@ -4,6 +4,3 @@
 [submodule "backend"]
 	path = backend
 	url = https://github.com/4gu14r/backend.git
-[submodule "backdrop2"]
-	path = backdrop2
-	url = https://github.com/4gu14r/backend.git
